@@ -1,0 +1,21 @@
+
+<h4>Basic mat-select</h4>
+<form [formGroup]="locationForm" (submit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <mat-select formControlName="country">
+        <mat-option *ngFor="let c of countries" [value]="c.name">
+          {{c.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="isCountrySelected">
+        <mat-label>State</mat-label>
+        <mat-select formControlName="state">
+            <mat-option *ngFor="let state of statesOfSelectedCountry" [value]="state">
+            {{state}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>  
+    <button type="submit" [disabled]="!locationForm.valid">Submit</button>
+</form>
