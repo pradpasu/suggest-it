@@ -1,1 +1,34 @@
-Home page
+<div class="main-container">
+    <mat-progress-bar mode="indeterminate" *ngIf="isProgressBarDisplayed"></mat-progress-bar>
+    <form [formGroup]="universityForm" (submit)="submit()">
+    <mat-form-field>
+        <mat-label>Select</mat-label>
+        <mat-select formControlName="university">
+            <mat-option value="one">University of Florida</mat-option>
+            <mat-option value="two">Florida International University</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" disabled="{{!universityForm.valid || isProgressBarDisplayed}}">Submit</button>
+    </form>
+    <div *ngIf="isContentDisplayed" class="card-container">
+        <div *ngFor="let card of cards">
+            <mat-card class="card">
+                <mat-card-header>
+                <mat-card-title>{{card.content}}</mat-card-title>
+                <mat-card-subtitle>{{card.source}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                <p>This card has divider and indeterminate progress as footer</p>
+                <mat-divider></mat-divider>
+                </mat-card-content>
+                <mat-card-actions>
+                <button mat-button>LIKE</button>
+                <button mat-button>SHARE</button>
+                </mat-card-actions>
+                <mat-card-footer>
+                <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
+                </mat-card-footer>
+            </mat-card>
+        </div>
+    </div>
+</div>
