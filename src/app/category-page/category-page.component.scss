@@ -4,6 +4,7 @@
 }
 .card{
     max-width: 400px;      
+    background-color: #ebf4f4;
 }
 .card-container {
     display: flex;
@@ -14,4 +15,10 @@
     align-items: stretch;
     justify-content: space-evenly;
     row-gap: 30px;
+}
+.title {
+    color: #071952;
+}
+.foot {
+    font-style: italic;
 }

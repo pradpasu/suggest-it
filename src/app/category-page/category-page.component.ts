@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Card, NavData, SOURCE_AI, SOURCE_DB } from '../interfaces';
 import { CountriesService } from '../services/countries.service';
 import { Post } from '../models/post';
+import { PostUserInteraction } from '../models/post-user-interaction';
 
 @Component({
   selector: 'app-category-page',
@@ -20,6 +21,9 @@ export class CategoryPageComponent {
   public navData: NavData;
   public isUserPostsDataDisplayed: boolean = false;
   public userPostsCards: Card[] = [];
+  public allPosts: Post[] = [];
+  public postUserInteractionMap: Map<string, {userid: string, recordid: string}[]> = new Map();
+  public userId = 'alksjdhfg';
 
   constructor(private route: ActivatedRoute, private countriesService: CountriesService){
     this.openai = new OpenAI({
@@ -31,6 +35,7 @@ export class CategoryPageComponent {
   public ngOnInit(): void {
     this.navData = this.getNavDataFromQueryParams();
     this.submit();
+    this.getAllPostUserInteractions();
     this.getAllPosts();
   }
 
@@ -111,25 +116,103 @@ export class CategoryPageComponent {
 
   public onSuggestItClick(card: Card){
     if(!card.id){
-      this.countriesService.pushPost(this.getPostDataFromCard(card));
+      this.countriesService.pushPost(this.getPostDataFromCard(card)).subscribe({
+        next: (res) => {
+          this.cards = this.cards.filter(c => c.content != card.content);
+          this.cards = [...this.cards];
+          this.addPostUserInteraction(res.key);
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
+    } else {
+      const cardToBeUpdated = this.allPosts.find(pc => pc.id === card.id);
+      cardToBeUpdated.suggests += 1;
+      this.countriesService.updatePost(cardToBeUpdated).subscribe(_res => {
+        console.log(_res);
+        this.addPostUserInteraction(cardToBeUpdated.id);
+      })
     }
+  }
+
+  public onUnsuggestItClick(card: Card){
+    this.countriesService.removePostUserInteraction(this.getPostUserInteractionId(card)).subscribe(res => {
+      const cardToBeUpdated = this.allPosts.find(pc => pc.id === card.id);
+      cardToBeUpdated.suggests -= 1;
+      this.countriesService.updatePost(cardToBeUpdated).subscribe(_res => {
+        console.log(_res);
+        if(this.postUserInteractionMap.has(card.id)){
+          const newEntries = this.postUserInteractionMap.get(card.id).filter(data => data.userid !== this.userId);
+          this.postUserInteractionMap.set(card.id, newEntries);
+        }
+        this.userPostsCards = [...this.userPostsCards];
+      })
+    });
   }
 
   public getPostDataFromCard(card: Card): Post{
     return {
       content: card.content,
-      suggests: 1
+      suggests: 1,
+      category: this.navData.category,
+      state: this.navData.state,
+      country: this.navData.country,
+      university: this.navData.university
     };
   }
 
   public getAllPosts(){
     this.countriesService.getAllPosts().subscribe((response: Post[]) => {
       if(response.length > 0){
+        this.userPostsCards = [];
+        this.allPosts = response;
         response.forEach(p => {
-          this.userPostsCards.push({content: p.content, source: SOURCE_DB, suggests: p.suggests})
-        })
+          const nD = this.navData;
+          if(p.category == nD.category && p.country == nD.country 
+          && p.state == nD.state && p.university.toLowerCase() == nD.university.toLowerCase()){
+            this.userPostsCards.push({content: p.content, source: SOURCE_DB, suggests: p.suggests, id: p.id});
+          }
+        });
         this.isUserPostsDataDisplayed = true;
       }
+    });
+  }
+
+  public getAllPostUserInteractions(){
+    this.countriesService.getAllPostUserInteractions().subscribe((response: PostUserInteraction[]) => {
+      if(response.length > 0){
+        console.log('Got Post User Interactions');
+        console.log(response);
+        this.postUserInteractionMap.clear();
+        response.forEach(p => {
+          if(!this.postUserInteractionMap.has(p.postid)){
+            this.postUserInteractionMap.set(p.postid, []);
+          }
+          this.postUserInteractionMap.get(p.postid).push({userid: p.userid, recordid: p.id});
+          console.log(this.postUserInteractionMap);
+        });
+      }
+    });
+  }
+
+  public addPostUserInteraction(postId: string){
+    this.countriesService.pushPostUserInteraction({
+      postid: postId,
+      userid: this.userId
+    }).subscribe(res => {
+      console.log(res);
     })
+  }
+
+  public didUserSuggestThis(card: Card){
+    if(this.postUserInteractionMap.has(card.id)){
+      return !!this.postUserInteractionMap.get(card.id).find(data => data.userid === this.userId);
+    }
+    return false;
+  }
+
+  public getPostUserInteractionId(card: Card){
+    return this.postUserInteractionMap.get(card.id).find(data => data.userid === this.userId).recordid;
   }
 }

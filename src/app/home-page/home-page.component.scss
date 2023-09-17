@@ -1,6 +1,7 @@
 .main-container{
     width: 100%;
     height: 100%;
+    
 }
 .card{
     max-width: 400px;
@@ -15,3 +16,76 @@
     justify-content: space-evenly;
     row-gap: 30px;
 }
+
+// demo
+/* Center-align the form */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh; 
+    width: 80%;
+    background-color: #ebf4f4; 
+    margin-left: 17vh;
+    padding: 20px; 
+    border-radius: 20px;
+  }
+
+  .label {
+    font-weight: bold;
+    border-radius: 20px;
+  }
+  
+  /* Style the form fields */
+  mat-form-field {
+    border: #007bff 4px;
+    width: 100%;
+    margin-bottom: 20px; 
+  }
+  
+  /* Style the mat-select dropdowns */
+  mat-select {
+    width: 100%;
+    font-size: 16px; /* Adjust font size as needed */
+  }
+  
+  /* Style the mat-option elements */
+  mat-option {
+    font-size: 14px; /* Adjust font size as needed */
+  }
+  
+  /* Style the Submit button */
+  button[type="submit"] {
+    width: 100%;
+    font-size: 16px;
+    background-color: #007bff; /* Change the button's background color */
+    color: #fff; /* Change the button's text color */
+    border: none;
+    border-radius: 4px;
+    padding: 12px 24px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:disabled {
+    background-color: #ccc; /* Change the disabled button's background color */
+    color: #666; /* Change the disabled button's text color */
+    cursor: not-allowed;
+  }
+
+  // cards
+  .card {
+    background-color: #cce2e2;
+    border: #F2F7A1 30px;
+  }
+  .cont {
+    color: #071952;
+    font-weight: bold;
+  }
+  .recommedation {
+    font-style: italic;
+  }
+  .card {
+    border-radius: 10px;
+    box-shadow: #666 10px;
+  }
