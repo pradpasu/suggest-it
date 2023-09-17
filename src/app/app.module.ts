@@ -1,6 +1,6 @@
+import { HotToastModule } from '@ngneat/hot-toast';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AngularFireModule } from '@angular/fire/compat';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -52,7 +52,8 @@ import { provideAuth,getAuth } from '@angular/fire/auth'
     MatDividerModule,
     MatInputModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    HotToastModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
