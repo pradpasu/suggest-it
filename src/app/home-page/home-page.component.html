@@ -1,37 +1,39 @@
 <div class="main-container">
     <mat-progress-bar mode="indeterminate" *ngIf="isProgressBarDisplayed"></mat-progress-bar>
     <button (click)="push()">Push</button>
-    <form [formGroup]="form" (submit)="submit()" *ngIf="isFormDisplayed">
-        <mat-form-field>
-            <mat-label>Country</mat-label>
-            <mat-select formControlName="country">
-              <mat-option *ngFor="let c of countries" [value]="c.name">
-                {{c.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field *ngIf="isCountrySelected">
-              <mat-label>State</mat-label>
-              <mat-select formControlName="state">
-                  <mat-option *ngFor="let state of statesOfSelectedCountry" [value]="state">
-                  {{state}}
+    <div class="form-container">
+        <form [formGroup]="form" (submit)="submit()" *ngIf="isFormDisplayed">
+            <mat-form-field>
+                <mat-label class="label">Country</mat-label>
+                <mat-select formControlName="country">
+                  <mat-option *ngFor="let c of countries" [value]="c.name">
+                    {{c.name}}
                   </mat-option>
-              </mat-select>
-          </mat-form-field>
-        <mat-form-field *ngIf="isCountrySelected && isStateSelected && isUniversityDataLoaded">
-            <mat-label>Select</mat-label>
-            <mat-select formControlName="university">
-                <mat-option *ngFor="let university of universitiesOfSelectedCombo" [value]="university">{{university}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" disabled="{{!form.valid || isProgressBarDisplayed}}">Submit</button>
-    </form>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field *ngIf="isCountrySelected">
+                  <mat-label class="label">State</mat-label>
+                  <mat-select formControlName="state">
+                      <mat-option *ngFor="let state of statesOfSelectedCountry" [value]="state">
+                      {{state}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+            <mat-form-field *ngIf="isCountrySelected && isStateSelected && isUniversityDataLoaded">
+                <mat-label class="label">Select</mat-label>
+                <mat-select formControlName="university">
+                    <mat-option *ngFor="let university of universitiesOfSelectedCombo" [value]="university">{{university}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" disabled="{{!form.valid || isProgressBarDisplayed}}">Submit</button>
+        </form>
+    </div>
     <div *ngIf="isContentDisplayed" class="card-container">
         <div *ngFor="let card of cards">
             <mat-card class="card" (click)="onCardClick(card)">
                 <mat-card-header>
-                    <mat-card-title>{{card.content}}</mat-card-title>
-                    <mat-card-subtitle>{{card.source}}</mat-card-subtitle>
+                    <mat-card-title class="cont">{{card.content}}</mat-card-title>
+                    <mat-card-subtitle class="recommedation">{{card.source}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
                     <mat-divider></mat-divider>

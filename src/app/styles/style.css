@@ -1,0 +1,25 @@
+/* Center align the form */
+.center-align {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* You can adjust the height as needed */
+  }
+  
+  /* Style the form fields */
+  .mat-form-field {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  /* Style the mat-select dropdowns */
+  .mat-select {
+    width: 100%;
+  }
+  
+  /* Add margin between mat-options in the dropdown */
+  .mat-option {
+    padding: 10px;
+  }
+  
