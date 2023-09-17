@@ -159,7 +159,7 @@ export class HomePageComponent implements OnInit{
     if(responseAsArray.length > 1){
       responseAsArray.forEach(responseString => {
         if(!!responseString){
-          this.universitiesOfSelectedCombo.push(responseString);
+          this.universitiesOfSelectedCombo.push(responseString.trim());
         }
       });
       this.toggleIsUniversityDataLoaded();
