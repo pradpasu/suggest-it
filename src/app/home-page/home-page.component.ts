@@ -175,4 +175,7 @@ export class HomePageComponent implements OnInit{
     return message;
   }
 
+  public push(){
+    this.countriesService.push();
+  }
 }

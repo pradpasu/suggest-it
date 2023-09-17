@@ -1,5 +1,6 @@
 <div class="main-container">
     <mat-progress-bar mode="indeterminate" *ngIf="isProgressBarDisplayed"></mat-progress-bar>
+    <button (click)="push()">Push</button>
     <form [formGroup]="form" (submit)="submit()" *ngIf="isFormDisplayed">
         <mat-form-field>
             <mat-label>Country</mat-label>

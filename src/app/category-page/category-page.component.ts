@@ -3,7 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { OpenAI } from 'openai';
 import { catchError, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Card, NavData, SOURCE_AI } from '../interfaces';
+import { Card, NavData, SOURCE_AI, SOURCE_DB } from '../interfaces';
+import { CountriesService } from '../services/countries.service';
+import { Post } from '../models/post';
 
 @Component({
   selector: 'app-category-page',
@@ -16,8 +18,10 @@ export class CategoryPageComponent {
   public openai: OpenAI;
   public cards: Card[] = [];
   public navData: NavData;
+  public isUserPostsDataDisplayed: boolean = false;
+  public userPostsCards: Card[] = [];
 
-  constructor(private route: ActivatedRoute){
+  constructor(private route: ActivatedRoute, private countriesService: CountriesService){
     this.openai = new OpenAI({
       apiKey: environment.openai.api_key,
       dangerouslyAllowBrowser: true
@@ -27,6 +31,7 @@ export class CategoryPageComponent {
   public ngOnInit(): void {
     this.navData = this.getNavDataFromQueryParams();
     this.submit();
+    this.getAllPosts();
   }
 
   public getNavDataFromQueryParams(): NavData{
@@ -63,8 +68,8 @@ export class CategoryPageComponent {
   public prepareCards(response: OpenAI.Chat.Completions.ChatCompletion){
     console.log(response.choices[0].message.content);
     const responseMessageContent: string = response.choices[0].message.content || '';
-    const responseAsArray = responseMessageContent.split(';');
-    if(responseAsArray.length > 1){
+    const responseAsArray = responseMessageContent.split('#');
+    if(responseAsArray.length > 0){
       responseAsArray.forEach(responseString => {
         if(!!responseString){
           this.cards.push(
@@ -82,8 +87,12 @@ export class CategoryPageComponent {
   }
 
   public prepareOpenAiMessageContent(): string{
-    const prefix = `Give me points seperated by ';' without any intro or conclusion like ABCD;XYZ;PQR for the following question `;
-    const question = `Tell me must know ${this.navData.category} tips that incoming immigrant students to ${this.navData.university} in ${this.navData.state}, ${this.navData.country} must know`;
+    const prefix = `Give me couple of single line points in the following format
+    # This is the first example point
+    # This is the second example point
+    # This is the third example point
+    `;
+    const question = `The question is: Tell me must know ${this.navData.category} tips that incoming immigrant students to ${this.navData.university} in ${this.navData.state}, ${this.navData.country} must know`;
     const message = prefix + question;
     return message;
   }
@@ -98,5 +107,29 @@ export class CategoryPageComponent {
 
   public getStringAsTitleCase(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  public onSuggestItClick(card: Card){
+    if(!card.id){
+      this.countriesService.pushPost(this.getPostDataFromCard(card));
+    }
+  }
+
+  public getPostDataFromCard(card: Card): Post{
+    return {
+      content: card.content,
+      suggests: 1
+    };
+  }
+
+  public getAllPosts(){
+    this.countriesService.getAllPosts().subscribe((response: Post[]) => {
+      if(response.length > 0){
+        response.forEach(p => {
+          this.userPostsCards.push({content: p.content, source: SOURCE_DB, suggests: p.suggests})
+        })
+        this.isUserPostsDataDisplayed = true;
+      }
+    })
   }
 }

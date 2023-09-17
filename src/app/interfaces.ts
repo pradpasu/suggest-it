@@ -1,7 +1,9 @@
 
 export interface Card{
+    id?: string;
     content: string;
     source: string;
+    suggests?: number;
   };
   
 export interface NavData{
