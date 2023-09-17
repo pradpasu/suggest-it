@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import OpenAI from 'openai';
-import {from} from 'rxjs'
+import {from} from 'rxjs';
+import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
+//import { UsersService } from './services/users.service';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +12,18 @@ import {from} from 'rxjs'
 })
 export class AppComponent {
   title = 'suggest-it';
+  //user$ = this.usersService.currentUserProfile$;
+
+  constructor(
+    public authService: AuthService,
+    //public usersService: UsersService,
+    private router: Router
+  ) {}
+
+  logout() {
+    this.authService.logout().subscribe(() => {
+      this.router.navigate(['/']);
+    });
+  }
+
 }
