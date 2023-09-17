@@ -1,11 +1,15 @@
 
 export interface Card{
+    id?: string;
     content: string;
     source: string;
+    suggests?: number;
   };
   
 export interface NavData{
-    university: string;
+    country: string;
+    state: string;
+    university?: string;
     category: string;
 }
   

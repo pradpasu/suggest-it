@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "suggest-it-app": {
+      "hosting": {
+        "suggest-it": [
+          "suggest-it-app"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "suggest-it-app"
+  }
+}

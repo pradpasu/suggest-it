@@ -4,6 +4,7 @@
 }
 .card{
     max-width: 400px;      
+    background-color: #ebf4f4;
 }
 .card-container {
     display: flex;
@@ -14,4 +15,43 @@
     align-items: stretch;
     justify-content: space-evenly;
     row-gap: 30px;
+}
+.title {
+    color: #071952;
+}
+.foot {
+    font-style: italic;
+}
+
+/* Clean Material Design Card */
+.clean-mat-card {
+    max-width: 400px;
+    min-height: 300px;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clean-mat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.clean-mat-card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.clean-mat-card-content {
+    color: #333333;
+}
+
+.clean-mat-card-header{
+    min-height: 200px;
 }

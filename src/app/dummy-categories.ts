@@ -2,15 +2,15 @@ import { Card, SOURCE_US } from "./interfaces";
 
 export const dummyCategories: Card[] = [
     {
-        content: 'Visa',
+        content: 'Visa Procedure',
         source: SOURCE_US
     },
     {
-        content: 'Loan',
+        content: 'Loan Process',
         source: SOURCE_US
     },
     {
-        content: 'Shopping',
+        content: 'Items to shop',
         source: SOURCE_US
     },
     {
@@ -18,7 +18,7 @@ export const dummyCategories: Card[] = [
         source: SOURCE_US
     },
     {
-        content: 'Leasing',
+        content: 'Lease and Housing',
         source: SOURCE_US
     },
     {
@@ -38,7 +38,7 @@ export const dummyCategories: Card[] = [
         source: SOURCE_US
     },
     {
-        content: 'Insurance',
+        content: 'Insurance Requirements',
         source: SOURCE_US
     }
 ];

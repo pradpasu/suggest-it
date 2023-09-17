@@ -23,6 +23,7 @@
       "ES2022",
       "dom"
     ],
+    "strictNullChecks": false,
     "strictPropertyInitialization": false
   },
   "angularCompilerOptions": {

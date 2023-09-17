@@ -1,9 +1,23 @@
-<mat-toolbar color="primary">  
-    <button mat-icon-button [routerLink]="['/']">
-      <mat-icon>home</mat-icon>
-    </button>
+<mat-toolbar color="primary" class="mat-toolbar">
+    <ng-container *ngIf="authService.currentUser$ | async as user">  
+      <button mat-icon-button [routerLink]="['/home']">
+        <mat-icon>home</mat-icon>
+      </button>
+    </ng-container>
     <span>Suggest It!</span>
-  </mat-toolbar>
+    <ng-container *ngIf="authService.currentUser$ | async as user; else loginButton">
+      <button mat-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </ng-container>
+    <ng-template #loginButton>
+      <button mat-button routerLink="">
+        <mat-icon>login</mat-icon>
+        Login
+      </button>
+    </ng-template>
+</mat-toolbar>
 <mat-drawer-container class="drawer-container" autosize>
     <mat-drawer #drawer class="drawer-sidenav" mode="side">
       <p>Auto-resizing sidenav</p>
