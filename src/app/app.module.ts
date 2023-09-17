@@ -24,7 +24,7 @@ import { CategoryPageComponent } from './category-page/category-page.component'
   declarations: [
     AppComponent,
     HomePageComponent,
-    CountriesComponent
+    CountriesComponent,
     CategoryPageComponent
   ],
   imports: [
@@ -36,7 +36,7 @@ import { CategoryPageComponent } from './category-page/category-page.component'
     MatToolbarModule,
     MatIconModule,
     AngularFireModule.initializeApp(environment.firebase),
-    FormsModule
+    FormsModule,
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
