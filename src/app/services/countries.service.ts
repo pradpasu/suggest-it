@@ -4,6 +4,8 @@ import { Countries } from '../models/countries';
 import { map } from 'rxjs';
 import { Observable } from 'rxjs';
 import { Post } from '../models/post';
+import {from} from 'rxjs';
+import { PostUserInteraction } from '../models/post-user-interaction';
 
 @Injectable({
   providedIn: 'root'
@@ -35,15 +37,24 @@ export class CountriesService {
       });
   }
 
-  pushPost(postData: Post) {
+  pushPost(postData: Post): Observable<any> {
     const recordsRef = this.db.database.ref('posts');
-    recordsRef.push(postData)
-      .then(() => {
-        console.log('Record added successfully');
-      })
-      .catch((error) => {
-        console.error('Error adding record:', error);
-      });
+    return from(recordsRef.push(postData));
+  }
+
+  updatePost(cardToBepdated: Post): Observable<any> {
+    const recordsRef = this.db.database.ref('posts');
+    return from(recordsRef.child(cardToBepdated.id).update(cardToBepdated));
+  }
+
+  pushPostUserInteraction(data: PostUserInteraction): Observable<any> {
+    const recordsRef = this.db.database.ref('post-user-interactions');
+    return from(recordsRef.push(data));
+  }
+
+  removePostUserInteraction(id: string): Observable<any>{
+    const recordsRef = this.db.database.ref('post-user-interactions');
+    return from(recordsRef.child(id).remove());
   }
 
   getAllPosts(): Observable<Post[]>{
@@ -51,6 +62,14 @@ export class CountriesService {
       .snapshotChanges()
       .pipe(
         map(x => x.map((y:any) => ({ id: y.payload?.key, ...y.payload?.val() as Post })))
+      );    
+  }
+
+  getAllPostUserInteractions(): Observable<PostUserInteraction[]>{
+    return this.db.list<Post>("/post-user-interactions")
+      .snapshotChanges()
+      .pipe(
+        map(x => x.map((y:any) => ({ id: y.payload?.key, ...y.payload?.val() as PostUserInteraction })))
       );    
   }
 }
