@@ -9,8 +9,5 @@ export const environment = {
       authDomain: 'suggest-it-app.firebaseapp.com',
       messagingSenderId: '693360958577',
       measurementId: 'G-6GZ5KGV28R',
-    },
-    openai: {
-        api_key: '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'
     }
 };

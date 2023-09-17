@@ -38,23 +38,15 @@ export class HomePageComponent implements OnInit{
     private countriesService: CountriesService
   ){
     this.formBuilder = formBuilder;
-    this.openai = new OpenAI({
-      apiKey: environment.openai.api_key,
-      dangerouslyAllowBrowser: true
-    }); 
+  }
+
+  public ngOnInit(): void { 
     this.form = this.formBuilder.group({
       'country': [null, [Validators.required]],
       'state': [null, [Validators.required]],
       'university': [null, [Validators.required]]
     });
-    this.openai = new OpenAI({
-      apiKey: environment.openai.api_key,
-      dangerouslyAllowBrowser: true
-    }); 
     this.prepareCards();
-  }
-
-  public ngOnInit(): void {
     this.countriesService.getAll().subscribe(c => {
       this.countries = c;
       this.isFormDisplayed = true;
@@ -136,6 +128,10 @@ export class HomePageComponent implements OnInit{
   }
 
   public getUniversities(){
+    this.openai = new OpenAI({
+      apiKey: this.countriesService.apiKey,
+      dangerouslyAllowBrowser: true
+    });
     const messageContent = this.prepareUniversityFetchMessageContent();   
     this.toggleIsProgressbarDisplayed();
     from(this.openai.chat.completions.create({

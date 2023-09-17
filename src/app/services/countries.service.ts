@@ -12,6 +12,8 @@ import { PostUserInteraction } from '../models/post-user-interaction';
 })
 export class CountriesService {
 
+  public apiKey: string = '';
+
   constructor(private db: AngularFireDatabase) { }
 
   getAll(): Observable<Countries[]>{
@@ -71,5 +73,17 @@ export class CountriesService {
       .pipe(
         map(x => x.map((y:any) => ({ id: y.payload?.key, ...y.payload?.val() as PostUserInteraction })))
       );    
+  }
+
+  public setApiKey(){
+    const recordsRef = this.db.database.ref('openai-key');
+    recordsRef.once('value')
+      .then((snapshot) => {
+        const records = snapshot.val();
+        this.apiKey = records;
+      })
+      .catch((error) => {
+        console.error('Error getting records:', error);
+      });
   }
 }

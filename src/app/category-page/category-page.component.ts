@@ -27,16 +27,16 @@ export class CategoryPageComponent {
   public userId = 'alksjdhfg';
 
   constructor(private route: ActivatedRoute, private countriesService: CountriesService, private authService: AuthService){
-    this.openai = new OpenAI({
-      apiKey: environment.openai.api_key,
-      dangerouslyAllowBrowser: true
-    }); 
     this.authService.currentUser$.subscribe(res => {
       this.userId = res.uid;
     })
   }
 
   public ngOnInit(): void {
+    this.openai = new OpenAI({
+      apiKey: this.countriesService.apiKey,
+      dangerouslyAllowBrowser: true
+    }); 
     this.navData = this.getNavDataFromQueryParams();
     this.submit();
     this.getAllPostUserInteractions();

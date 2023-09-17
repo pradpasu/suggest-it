@@ -3,6 +3,7 @@ import OpenAI from 'openai';
 import {from} from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { CountriesService } from './services/countries.service';
 //import { UsersService } from './services/users.service';
 
 @Component({
@@ -17,8 +18,11 @@ export class AppComponent {
   constructor(
     public authService: AuthService,
     //public usersService: UsersService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private countriesService: CountriesService
+  ) {
+    this.countriesService.setApiKey();
+  }
 
   logout() {
     this.authService.logout().subscribe(() => {
