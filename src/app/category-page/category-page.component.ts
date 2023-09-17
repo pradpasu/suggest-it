@@ -7,6 +7,7 @@ import { Card, NavData, SOURCE_AI, SOURCE_DB } from '../interfaces';
 import { CountriesService } from '../services/countries.service';
 import { Post } from '../models/post';
 import { PostUserInteraction } from '../models/post-user-interaction';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-category-page',
@@ -25,11 +26,14 @@ export class CategoryPageComponent {
   public postUserInteractionMap: Map<string, {userid: string, recordid: string}[]> = new Map();
   public userId = 'alksjdhfg';
 
-  constructor(private route: ActivatedRoute, private countriesService: CountriesService){
+  constructor(private route: ActivatedRoute, private countriesService: CountriesService, private authService: AuthService){
     this.openai = new OpenAI({
       apiKey: environment.openai.api_key,
       dangerouslyAllowBrowser: true
     }); 
+    this.authService.currentUser$.subscribe(res => {
+      this.userId = res.uid;
+    })
   }
 
   public ngOnInit(): void {
