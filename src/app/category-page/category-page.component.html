@@ -3,13 +3,12 @@
     <div *ngIf="isUserPostsDataDisplayed">
         <div *ngIf="isContentDisplayed" class="card-container">
             <div *ngFor="let card of userPostsCards">
-                <mat-card class="card">
-                    <mat-card-header>
-                    <mat-card-title class="title">{{card.content}}</mat-card-title>
-                    <!-- <mat-card-subtitle>{{card.source}}</mat-card-subtitle> -->
+                <mat-card class="clean-mat-card">
+                    <mat-card-header class="clean-mat-card-header">
+                        <mat-card-title class="clean-mat-card-title">{{card.content}}</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                    <p class="foot">{{card.source}}</p>
+                    <p class="clean-mat-card-content">{{card.source}}</p>
                     <mat-divider></mat-divider>
                     </mat-card-content>
                     <mat-card-actions>
@@ -17,8 +16,6 @@
                     <button mat-button *ngIf="didUserSuggestThis(card)" (click)="onUnsuggestItClick(card)">unsuggest it</button>
                     <button mat-button disabled="true" *ngIf="card.suggests" >{{card.suggests}}</button>
                     </mat-card-actions>
-                    <mat-card-footer>
-                    </mat-card-footer>
                 </mat-card>
             </div>
         </div>    
@@ -26,12 +23,12 @@
     <mat-divider></mat-divider>
     <div *ngIf="isContentDisplayed" class="card-container">
         <div *ngFor="let card of cards">
-            <mat-card class="card">
-                <mat-card-header>
-                <mat-card-title class="title">{{card.content}}</mat-card-title>
+            <mat-card class="clean-mat-card">
+                <mat-card-header class="clean-mat-card-header">
+                    <mat-card-title class="clean-mat-card-title">{{card.content}}</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                <p class="foot">{{card.source}}</p>
+                <p class="clean-mat-card-content">{{card.source}}</p>
                 <mat-divider></mat-divider>
                 </mat-card-content>
                 <mat-card-actions>

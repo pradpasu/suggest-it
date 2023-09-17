@@ -1,8 +1,45 @@
 .main-container{
     width: 100%;
     height: 100%;
-    
 }
+
+.location-form-container{
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-content: stretch;
+  align-items: stretch;
+  row-gap: 30px;
+}
+
+.titles-container{
+  padding:50px;
+}
+
+.location-form-fields-container{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  align-content: stretch;
+  align-items: stretch;
+  column-gap: 30px;
+}
+
+.title-fields-container{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  align-content: stretch;
+  align-items: stretch;
+  justify-content: center;
+  column-gap: 30px;
+}
+
+.form-field{
+  min-width: 300px;
+}
+
 .card{
     max-width: 400px;
 }
@@ -16,63 +53,6 @@
     justify-content: space-evenly;
     row-gap: 30px;
 }
-
-// demo
-/* Center-align the form */
-.form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 80vh; 
-    width: 80%;
-    background-color: #ebf4f4; 
-    margin-left: 17vh;
-    padding: 20px; 
-    border-radius: 20px;
-  }
-
-  .label {
-    font-weight: bold;
-    border-radius: 20px;
-  }
-  
-  /* Style the form fields */
-  mat-form-field {
-    border: #007bff 4px;
-    width: 100%;
-    margin-bottom: 20px; 
-  }
-  
-  /* Style the mat-select dropdowns */
-  mat-select {
-    width: 100%;
-    font-size: 16px; /* Adjust font size as needed */
-  }
-  
-  /* Style the mat-option elements */
-  mat-option {
-    font-size: 14px; /* Adjust font size as needed */
-  }
-  
-  /* Style the Submit button */
-  button[type="submit"] {
-    width: 100%;
-    font-size: 16px;
-    background-color: #007bff; /* Change the button's background color */
-    color: #fff; /* Change the button's text color */
-    border: none;
-    border-radius: 4px;
-    padding: 12px 24px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:disabled {
-    background-color: #ccc; /* Change the disabled button's background color */
-    color: #666; /* Change the disabled button's text color */
-    cursor: not-allowed;
-  }
-
   // cards
   .card {
     background-color: #cce2e2;
@@ -89,3 +69,42 @@
     border-radius: 10px;
     box-shadow: #666 10px;
   }
+
+
+/* Clean Material Design Card */
+.clean-mat-card {
+  width: 250px;
+  height: 200px;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.clean-mat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.clean-mat-card-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.clean-mat-card-content {
+  color: #333333;
+}
+
+.clean-mat-card-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

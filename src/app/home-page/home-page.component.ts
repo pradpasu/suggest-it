@@ -22,6 +22,7 @@ export class HomePageComponent implements OnInit{
   public isStateSelected: boolean = false;
   public isFormDisplayed: boolean = false;
   public isUniversityDataLoaded: boolean = false;
+  public isTitleDisplayed: boolean = false;
   public openai: OpenAI;
   public cards: Card[] = [];
   public countries: Countries[] = []
@@ -66,6 +67,8 @@ export class HomePageComponent implements OnInit{
   }
 
   public submit(){
+    this.isFormDisplayed = false;
+    this.isTitleDisplayed = true;
     this.toggleIsContentDisplayed();
   }
 
@@ -173,9 +176,5 @@ export class HomePageComponent implements OnInit{
     const question = `Tell me top universities in ${this.selectedState}, ${this.selectedCountry}`;
     const message = prefix + question;
     return message;
-  }
-
-  public push(){
-    this.countriesService.push();
   }
 }
