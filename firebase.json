@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "suggest-it",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}
