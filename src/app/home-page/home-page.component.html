@@ -1,14 +1,29 @@
 <div class="main-container">
     <mat-progress-bar mode="indeterminate" *ngIf="isProgressBarDisplayed"></mat-progress-bar>
-    <form [formGroup]="universityForm" (submit)="submit()">
-    <mat-form-field>
-        <mat-label>Select</mat-label>
-        <mat-select formControlName="university">
-            <mat-option value="University of Florida">University of Florida</mat-option>
-            <mat-option value="Florida International University">Florida International University</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="primary" type="submit" disabled="{{!universityForm.valid || isProgressBarDisplayed}}">Submit</button>
+    <form [formGroup]="form" (submit)="submit()" *ngIf="isFormDisplayed">
+        <mat-form-field>
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country">
+              <mat-option *ngFor="let c of countries" [value]="c.name">
+                {{c.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngIf="isCountrySelected">
+              <mat-label>State</mat-label>
+              <mat-select formControlName="state">
+                  <mat-option *ngFor="let state of statesOfSelectedCountry" [value]="state">
+                  {{state}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+        <mat-form-field *ngIf="isCountrySelected && isStateSelected && isUniversityDataLoaded">
+            <mat-label>Select</mat-label>
+            <mat-select formControlName="university">
+                <mat-option *ngFor="let university of universitiesOfSelectedCombo" [value]="university">{{university}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" disabled="{{!form.valid || isProgressBarDisplayed}}">Submit</button>
     </form>
     <div *ngIf="isContentDisplayed" class="card-container">
         <div *ngFor="let card of cards">

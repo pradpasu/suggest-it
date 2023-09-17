@@ -6,7 +6,7 @@ import { CategoryPageComponent } from './category-page/category-page.component';
 
 const routes: Routes = [
   {
-    component: CountriesComponent,
+    component: HomePageComponent,
     path: "",
     
   },

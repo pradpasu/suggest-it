@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {OpenAI} from 'openai';
-import {catchError, from} from 'rxjs';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { OpenAI } from 'openai';
+import { catchError, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Card, NavData, SOURCE_AI } from '../interfaces';
-import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-category-page',
@@ -32,7 +31,12 @@ export class CategoryPageComponent {
 
   public getNavDataFromQueryParams(): NavData{
     const queryParamMap = this.route.snapshot.queryParamMap;
-    return {category: queryParamMap.get('category') as string, university: queryParamMap.get('university') as string};
+    return {
+      category: queryParamMap.get('category') as string, 
+      country: queryParamMap.get('country') as string,  
+      state: queryParamMap.get('state') as string, 
+      university: queryParamMap.get('university') as string
+    };
   }
 
   public submit(){
@@ -78,10 +82,8 @@ export class CategoryPageComponent {
   }
 
   public prepareOpenAiMessageContent(): string{
-    const prefix = `Give me a response of points seperated by ';' without any intro or 
-    conclusion like ABCD;XYZ;PQR for the following question `;
-    const question = `Tell me must know ${this.navData.category} tips that incoming students to 
-    specifically ${this.navData.university} must know`;
+    const prefix = `Give me points seperated by ';' without any intro or conclusion like ABCD;XYZ;PQR for the following question `;
+    const question = `Tell me must know ${this.navData.category} tips that incoming immigrant students to ${this.navData.university} in ${this.navData.state}, ${this.navData.country} must know`;
     const message = prefix + question;
     return message;
   }

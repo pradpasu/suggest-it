@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {OpenAI} from 'openai';
-import {catchError, from} from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { Card, NavData, SOURCE_AI } from '../interfaces';
 import { Router } from '@angular/router';
+import { OpenAI } from 'openai';
+import { environment } from 'src/environments/environment';
 import { dummyCategories } from '../dummy-categories';
+import { Card, NavData } from '../interfaces';
+import { Countries } from '../models/countries';
+import { CountriesService } from '../services/countries.service';
+import {catchError, from} from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -14,15 +16,34 @@ import { dummyCategories } from '../dummy-categories';
 })
 export class HomePageComponent implements OnInit{
 
-  public universityForm: FormGroup;
+  public form: FormGroup;
   public isContentDisplayed: boolean = false;
   public isProgressBarDisplayed: boolean = false;
+  public isStateSelected: boolean = false;
+  public isFormDisplayed: boolean = false;
+  public isUniversityDataLoaded: boolean = false;
   public openai: OpenAI;
   public cards: Card[] = [];
+  public countries: Countries[] = []
+  public selectedCountry: Countries;
+  public isCountrySelected: boolean = false;
+  public statesOfSelectedCountry: string[];
+  public selectedState: string;
+  public universitiesOfSelectedCombo: string[] = [];
 
-  constructor(private formBuilder: FormBuilder, private router: Router){
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private countriesService: CountriesService
+  ){
     this.formBuilder = formBuilder;
-    this.universityForm = this.formBuilder.group({
+    this.openai = new OpenAI({
+      apiKey: environment.openai.api_key,
+      dangerouslyAllowBrowser: true
+    }); 
+    this.form = this.formBuilder.group({
+      'country': [null, [Validators.required]],
+      'state': [null, [Validators.required]],
       'university': [null, [Validators.required]]
     });
     this.openai = new OpenAI({
@@ -33,6 +54,11 @@ export class HomePageComponent implements OnInit{
   }
 
   public ngOnInit(): void {
+    this.countriesService.getAll().subscribe(c => {
+      this.countries = c;
+      this.isFormDisplayed = true;
+      this.subscribeToCountry();
+    });
   }
 
   public navigate(navData: NavData){
@@ -63,12 +89,90 @@ export class HomePageComponent implements OnInit{
     this.isContentDisplayed = !this.isContentDisplayed;
   }
 
+  public toggleIsUniversityDataLoaded(){
+    this.isUniversityDataLoaded = !this.isUniversityDataLoaded;
+  }
+
   public getStringAsTitleCase(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   public onCardClick(card: Card){
-    const navData: NavData = {category: card.content, university: this.universityForm.value['university']};
+    const navData: NavData = {
+      category: card.content, 
+      country: this.form.value['country'],
+      state: this.form.value['state'],
+      university: this.form.value['university']
+    };
     this.navigate(navData);
   }
+
+  public subscribeToCountry(){
+    this.form.get('country')?.valueChanges.subscribe(country => {
+      if(!!country){
+        this.isCountrySelected = true;
+        this.selectedCountry = this.countries.find(_country => _country.name === country);
+        this.statesOfSelectedCountry = this.selectedCountry.states;
+        this.subscribeToState();
+      } else {
+        this.isCountrySelected = false;
+      }
+    });
+  }
+
+  public subscribeToState(){
+    this.form.get('state')?.valueChanges.subscribe(state => {
+      if(!!state){
+        this.isStateSelected = true;
+        this.selectedState = state;
+        this.getUniversities();
+      } else {
+        this.isStateSelected = false;
+      }
+    });
+  }
+
+  public getUniversities(){
+    const messageContent = this.prepareUniversityFetchMessageContent();   
+    this.toggleIsProgressbarDisplayed();
+    from(this.openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{role: 'user', content: messageContent}]
+    }))
+    .pipe(
+      catchError(error => {throw error})
+    )
+    .subscribe({
+      next: (completion) => {
+        this.toggleIsProgressbarDisplayed();
+        this.prepareUniversities(completion);
+      },
+      error: (err) => {
+        console.log(err);
+        this.toggleIsProgressbarDisplayed();
+    }});
+  }
+
+  public prepareUniversities(response: OpenAI.Chat.Completions.ChatCompletion){
+    const responseMessageContent: string = response.choices[0].message.content || '';
+    const responseAsArray = responseMessageContent.split(';');
+    if(responseAsArray.length > 1){
+      responseAsArray.forEach(responseString => {
+        if(!!responseString){
+          this.universitiesOfSelectedCombo.push(responseString);
+        }
+      });
+      this.toggleIsUniversityDataLoaded();
+    } else {
+      this.prepareUniversities(response);
+    }
+  }
+
+  public prepareUniversityFetchMessageContent(): string{
+    const prefix = `Give me a response of points seperated by ';' without any intro or conclusion like ABCD;XYZ;PQR for the following question `;
+    const question = `Tell me top universities in ${this.selectedState}, ${this.selectedCountry}`;
+    const message = prefix + question;
+    return message;
+  }
+
 }

@@ -5,7 +5,9 @@ export interface Card{
   };
   
 export interface NavData{
-    university: string;
+    country: string;
+    state: string;
+    university?: string;
     category: string;
 }
   
