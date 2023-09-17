@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import OpenAI from 'openai';
+import {from} from 'rxjs'
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'suggest-it';
-  showFiller = false;
 }

@@ -9,17 +9,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon'
 import { environment } from 'src/environments/environment';
 import { CountriesComponent } from './components/countries/countries.component';
-import {MatSelectModule} from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatCardModule} from '@angular/material/card';
+import {MatDividerModule} from '@angular/material/divider';
+import { CategoryPageComponent } from './category-page/category-page.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
     CountriesComponent
+    CategoryPageComponent
   ],
   imports: [
     BrowserModule,
@@ -30,9 +36,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatToolbarModule,
     MatIconModule,
     AngularFireModule.initializeApp(environment.firebase),
+    FormsModule
+    MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
-    FormsModule
+    MatProgressBarModule,
+    MatCardModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
