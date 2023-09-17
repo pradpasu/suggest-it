@@ -26,4 +26,9 @@
     border-radius: 100%;
     margin-right: 8px;
   }
-  
+ 
+  .mat-toolbar {
+    background-color: #f8f9fa; /* Background color */
+    color: #333333; /* Text color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
+  }

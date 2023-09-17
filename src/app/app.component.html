@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="mat-toolbar">
     <ng-container *ngIf="authService.currentUser$ | async as user">  
       <button mat-icon-button [routerLink]="['/home']">
         <mat-icon>home</mat-icon>
